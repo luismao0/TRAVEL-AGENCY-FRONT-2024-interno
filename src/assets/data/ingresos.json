@@ -1,0 +1,98 @@
+[
+  {
+    "id_ingreso": 1,
+    "concepto": "Paquete 4D-3N",
+    "monto_ingreso": 100,
+    "medio_de_pago": "FISICO",
+    "fecha_ingreso": "2024-05-20T17:48:55.439Z",
+    "cajaSesion": {
+      "id_caja_sesion": 1,
+      "nombre_caja_sesion": "Caja_sesion_1",
+      "monto_apertura": 10,
+      "fecha_apertura": "2024-05-10T17:48:55.439Z",
+      "fecha_cierre": "2024-05-10T17:48:55.439Z",
+      "descripcion": "CAJA 1",
+      "caja": {
+        "id_caja": 1,
+        "nombre": "Caja General",
+        "estado": 1,
+        "fecha_creacion": "2024-05-05T17:48:55.439Z",
+        "monto_inicial": 0
+      },
+      "estado": 1,
+      "moneda": {
+        "id_moneda": 1,
+        "nombre": "Sol",
+        "simbolo": "S/",
+        "es_principal": true,
+        "estado": 1
+      }
+    },
+    "estado": 1,
+    "tipo_de_pago": "PAGOS_FISICO"
+  },
+  {
+    "id_ingreso": 2,
+    "concepto": "Paquete 3D-2N",
+    "monto_ingreso": 200,
+    "medio_de_pago": "YAPE",
+    "fecha_ingreso": "2024-05-21T17:48:55.439Z",
+    "cajaSesion": {
+      "id_caja_sesion": 1,
+      "nombre_caja_sesion": "Caja_sesion_1",
+      "monto_apertura": 10,
+      "fecha_apertura": "2024-05-10T17:48:55.439Z",
+      "fecha_cierre": "2024-05-10T17:48:55.439Z",
+      "descripcion": "CAJA 1",
+      "caja": {
+        "id_caja": 1,
+        "nombre": "Caja General",
+        "estado": 1,
+        "fecha_creacion": "2024-05-05T17:48:55.439Z",
+        "monto_inicial": 0
+      },
+      "estado": 1,
+      "moneda": {
+        "id_moneda": 1,
+        "nombre": "Sol",
+        "simbolo": "S/",
+        "es_principal": true,
+        "estado": 1
+      }
+    },
+    "estado": 1,
+    "tipo_de_pago": "PAGOS_DIGITAL"
+  },
+  {
+    "id_ingreso": 3,
+    "concepto": "Endoce: Picchu Travel",
+    "monto_ingreso": 500,
+    "medio_de_pago": "Transferencia Bancaria",
+    "fecha_ingreso": "2024-05-27T17:48:55.439Z",
+    "cajaSesion": {
+      "id_caja_sesion": 1,
+      "nombre_caja_sesion": "Caja_sesion_1",
+      "monto_apertura": 10,
+      "fecha_apertura": "2024-05-10T17:48:55.439Z",
+      "fecha_cierre": "2024-05-10T17:48:55.439Z",
+      "descripcion": "CAJA 1",
+      "caja": {
+        "id_caja": 1,
+        "nombre": "Caja General",
+        "estado": 1,
+        "fecha_creacion": "2024-05-05T17:48:55.439Z",
+        "monto_inicial": 0
+      },
+      "estado": 1,
+      "moneda": {
+        "id_moneda": 1,
+        "nombre": "Sol",
+        "simbolo": "S/",
+        "es_principal": true,
+        "estado": 1
+      }
+    },
+    "estado": 1,
+    "tipo_de_pago": "PAGOS_DIGITAL"
+  }
+]

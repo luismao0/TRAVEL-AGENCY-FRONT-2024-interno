@@ -1,0 +1,145 @@
+<div class="addContainer">
+  <div class="modalHeader">
+    <div class="editRowModal">
+      <div class="modalHeader clearfix">
+        <div class="modal-about">
+          {{dialogTitle}}
+        </div>
+      </div>
+    </div>
+    <button mat-icon-button (click)="dialogRef.close()" class="modal-close-button" aria-label="Close dialog">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div mat-dialog-content>
+    <form class="register-form m-4" [formGroup]="ingresosForm" (ngSubmit)="submit">
+      <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Concepto</mat-label>
+            <input matInput formControlName="concepto" required>
+            <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>face</mat-icon>
+            @if (ingresosForm.get('concepto')?.hasError('required')) {
+            <mat-error>
+              Debe crearse un concepto
+            </mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Monto de Ingreso</mat-label>
+            <input matInput formControlName="monto_ingreso" required>
+            <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>business_center</mat-icon>
+            @if (ingresosForm.get('monto_ingreso')?.hasError('required')) {
+            <mat-error>
+              El monto es requerido
+            </mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Tipo de Ingreso</mat-label>
+            <input matInput formControlName="tipo_de_pago" required>
+            <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>flag</mat-icon>
+
+
+            @if (ingresosForm.get('tipo_de_pago')?.hasError('required')) {
+            <mat-error>
+              Tipo de ingreso es requerido
+            </mat-error>
+            }
+          </mat-form-field>
+
+
+
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Medio de Pago</mat-label>
+            <input matInput formControlName="medio_de_pago" required>
+            <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>school</mat-icon>
+            @if (ingresosForm.get('medio_de_pago')?.hasError('required')) {
+            <mat-error>
+              Medio de pago es requerido
+            </mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+      <!-- <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Mobile</mat-label>
+            <input matInput formControlName="mobile" type="number">
+            <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>phone</mat-icon>
+            @if (ingresosForm.get('mobile')?.hasError('required')) {
+            <mat-error>
+              Mobile is required
+            </mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" required>
+            <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>email</mat-icon>
+            @if (ingresosForm.get('email')?.hasError('required') || ingresosForm.get('email')?.touched) {
+            <mat-error>
+              Please enter a valid email address
+            </mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div> -->
+      <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Fecha de Pago</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="fecha_ingreso">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            @if (ingresosForm.get('fecha_ingreso')?.hasError('required')) {
+            <mat-error>
+              Ingrese una fecha válida
+            </mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+          <mat-form-field class="example-full-width mb-3" appearance="outline">
+            <mat-label>Gender</mat-label>
+            <mat-select formControlName="gender" required>
+              <mat-option [value]="'Male'">
+                Male
+              </mat-option>
+              <mat-option [value]="'Female'">
+                Female
+              </mat-option>
+            </mat-select>
+            <!-- @if (docForm.get('gender')?.hasError('required')) {
+            <mat-error>
+              Gender is required
+            </mat-error>
+            } -->
+          </mat-form-field>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+          <div class="example-button-row">
+            <button mat-raised-button color="primary" [disabled]="!ingresosForm.valid" [mat-dialog-close]="1"
+              (click)="confirmAdd()">Guardar</button>
+            <button mat-raised-button color="warn" (click)="onNoClick()" tabindex="-1">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
