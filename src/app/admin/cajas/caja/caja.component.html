@@ -1,0 +1,411 @@
+<section class="content">
+    <div class="content-block">
+        <div class="block-header">
+            <app-breadcrumb [title]="'Caja'" [active_item]="'Caja'"></app-breadcrumb>
+        </div>
+        <!------------------ SECCION PARA CAMBIAR CAJA--------------------------------->
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header" style="justify-content: space-between; align-items: center;">
+                        <h2>CAJA_NAME</h2>
+                        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 ">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Cambiar Caja</mat-label>
+                                <mat-select formControlName="caja">
+                                    <!-- @for (caja of cajas; track caja) {
+                                    <mat-option [value]="caja.value">{{caja.viewValue}}</mat-option>
+                                    } -->
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!---------------------------------------------------------------------------------->
+        
+        <div class="body pb-4">
+            <div class="row clearfix">
+                <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+                    <mat-accordion>
+                        <mat-expansion-panel expanded="true">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    SESION DE CAJA
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="row">
+                                <!--------------- SECCION PARA CREAR CAJA SESION POR PRIMERA VEZ-------------------->
+                                <div class="row clearfix">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="card py-5">
+                                            <div class="body"
+                                                style="justify-content: space-between; align-items: center;">
+                                                <div class="bg" fxLayout="column" fxLayoutAlign="center center">
+                                                    <h2 fxLayoutAlign="center center">
+                                                        ¿Desea crear una nueva caja sesion?
+                                                    </h2>
+                                                    <h3>
+                                                        No se ha creado una Caja Sesion aún
+                                                    </h3>
+                                                    <button mat-raised-button color="primary"
+                                                        (click)="CrearTablaSesion()">Crear nueva
+                                                        sesion</button>
+                                                    <!-- <ngx-skeleton-loader count="1" [theme]="{height: '20vh', width: '100vh'}" appearance="line" /> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!---------------------------------------------------------------------------------->
+                                <!----------------------- MOSTRAR DATOS DE LA CAJA SESION--------------------------->
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                    <div class="card">
+                                        <div class="header">
+                                            <h2>CAJA SESION 1</h2>
+                                        </div>
+
+                                        <div class="row SeccionDatosCaja">
+                                            <div class="col-lg-10 col-12 body">
+                                                <div class="row">
+                                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-1">
+                                                        <!-- Cambiado a mb-1 -->
+                                                        <mat-form-field class="example-full-width mb-1"
+                                                            appearance="outline">
+                                                            <mat-label>Monto Apertura</mat-label>
+                                                            <input matInput formControlName="monto_apertura" required>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-1">
+                                                        <!-- Cambiado a mb-1 -->
+                                                        <mat-form-field class="example-full-width" appearance="outline">
+                                                            <mat-label>Fecha</mat-label>
+                                                            <input matInput formControlName="fecha_apertura">
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-1">
+                                                        <!-- Cambiado a mb-1 -->
+                                                        <mat-form-field class="example-full-width" appearance="outline">
+                                                            <mat-label>Descripcion</mat-label>
+                                                            <input matInput formControlName="descripcion" required>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-1">
+                                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-1">
+                                                            <!-- Cambiado a mb-1 -->
+                                                            <mat-form-field class="example-full-width"
+                                                                appearance="outline">
+                                                                <mat-label>Tipo Moneda</mat-label>
+                                                                <input matInput formControlName="tipo_moneda">
+                                                            </mat-form-field>
+                                                        </div>
+                                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-1">
+                                                            <section class="example-section">
+                                                                <label class="example-margin">¿Moneda es
+                                                                    Principal?:</label>
+                                                                <mat-radio-group>
+                                                                    <mat-radio-button class="example-margin"
+                                                                        value="after">Si</mat-radio-button>
+                                                                    <mat-radio-button class="example-margin"
+                                                                        value="before">No
+                                                                    </mat-radio-button>
+                                                                </mat-radio-group>
+                                                            </section>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- <button mat-raised-button color="secundary" (click)="Guardar()"
+                                                    >Guardar</button>
+                                                    <button mat-raised-button color="secondary" (click)="Cancelar()"
+                                                        >Cancelar</button> -->
+
+                                            </div>
+                                            <div class="col-lg-2 col-12 SeccionDatosBotones mt-lg-0 mt-3">
+                                                <div class="row">
+                                                    <div class="col-12 mb-2 d-flex justify-content-center">
+                                                        <!-- <button mat-raised-button color="primary" class="fixed-width-button"
+                                                    (click)="editarCaja()">Editar</button> -->
+                                                    </div>
+                                                    <div class="col-12 mb-2 d-flex justify-content-center">
+                                                        <button mat-raised-button color="primary"
+                                                            class="fixed-width-button">Arquear Caja </button>
+                                                    </div>
+                                                    <div class="col-10 mb-2 d-flex justify-content-center">
+                                                        <mat-label> Cambiar Caja</mat-label>
+                                                        <mat-select formControlName="Cambiar_Caja" required>
+                                                            <mat-option [value]="'Caja_Sesion_Sol'">
+                                                                Caja Sesion Sol
+                                                            </mat-option>
+                                                            <mat-option [value]="'Caja_sesion_Dolar'">
+                                                                Caja Sesion Dolar
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!---------------------------------------------------------------------------------->
+
+
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="card">
+                                        <mat-tab-group>
+                                            <mat-tab>
+                                                <ng-template mat-tab-label>
+                                                    <mat-icon class="example-tab-icon msr-2">file_upload</mat-icon>
+                                                    Ingresos
+                                                </ng-template>
+                                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                                    <div class="project_widget">
+                                                        <div class="header">
+                                                            <h2><strong>Ingresos</strong></h2>
+                                                        </div>
+                                                        <div class="body">
+                                                            <!-- <app-ingreso-tabla></app-ingreso-tabla> -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </mat-tab>
+
+                                            <mat-tab>
+                                                <ng-template mat-tab-label>
+                                                    <mat-icon class="example-tab-icon msr-2">file_download</mat-icon>
+                                                    Egresos
+                                                </ng-template>
+                                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                                    <div class="project_widget">
+                                                        <div class="header">
+                                                            <h2><strong>Egresos</strong></h2>
+                                                        </div>
+                                                        <div class="body">
+                                                            <!-- <app-egreso-tabla></app-egreso-tabla> -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </mat-tab>
+                                        </mat-tab-group>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    CIERRE DE CAJA
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                                    <div class="panel-body">
+
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <div class="card">
+                                                    <div class="header">
+                                                        <h2>Input mask </h2>|
+                                                    </div>
+                                                    <div class="body">
+                                                        <div class="row">
+                                                            <div class="col-xl-4 col-md-6 col-sm-12">
+
+                                                                <mat-form-field class="example-full-width"
+                                                                    appearance="outline">
+                                                                    <mat-label>Nombre</mat-label>
+                                                                    <input matInput formControlName="nombre" required>
+                                                                    <mat-icon
+                                                                        class="material-icons-outlined color-icon p-3"
+                                                                        matSuffix>face</mat-icon>
+                                                                    <!-- @if (cajaForm.get('nombre')?.hasError('required')) {
+                                                                    <mat-error>
+                                                                    El nombre es necesario
+                                                                    </mat-error>
+                                                                    } -->
+                                                                </mat-form-field>
+
+                                                            </div>
+                                                            <div class="col-xl-4 col-md-6 col-sm-12">
+                                                                <mat-form-field class="example-full-width"
+                                                                    appearance="outline">
+                                                                    <mat-label>Monto de cierre</mat-label>
+                                                                    <input matInput formControlName="nombre" required>
+                                                                    <mat-icon
+                                                                        class="material-icons-outlined color-icon p-3"
+                                                                        matSuffix>attach_money</mat-icon>
+                                                                    <!-- @if (cajaForm.get('nombre')?.hasError('required')) {
+                                                                    <mat-error>
+                                                                    El nombre es necesario
+                                                                    </mat-error>
+                                                                    } -->
+                                                                </mat-form-field>
+                                                            </div>
+                                                            <div class="col-xl-4 col-md-6 col-sm-12">
+                                                                <mat-form-field class="example-full-width"
+                                                                    appearance="outline">
+                                                                    <mat-label>Monto total del sistema</mat-label>
+                                                                    <input matInput formControlName="nombre" required>
+                                                                    <mat-icon
+                                                                        class="material-icons-outlined color-icon p-3"
+                                                                        matSuffix>show_chart</mat-icon>
+                                                                    <!-- @if (cajaForm.get('nombre')?.hasError('required')) {
+                                                                    <mat-error>
+                                                                    El nombre es necesario
+                                                                    </mat-error>
+                                                                    } -->
+                                                                </mat-form-field>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-xl-4 col-md-6 col-sm-12">
+
+                                                                <mat-form-field class="example-full-width"
+                                                                    appearance="outline">
+                                                                    <mat-label>Monto total Caja Física</mat-label>
+                                                                    <input matInput formControlName="nombre" required>
+                                                                    <mat-icon
+                                                                        class="material-icons-outlined color-icon p-3"
+                                                                        matSuffix>face</mat-icon>
+                                                                    <!-- @if (cajaForm.get('nombre')?.hasError('required')) {
+                                                                    <mat-error>
+                                                                    El nombre es necesario
+                                                                    </mat-error>
+                                                                    } -->
+                                                                </mat-form-field>
+
+                                                            </div>
+                                                            <div class="col-xl-4 col-md-6 col-sm-12">
+                                                                <mat-form-field class="example-full-width"
+                                                                    appearance="outline">
+                                                                    <mat-label>Fecha de cierre</mat-label>
+                                                                    <input matInput formControlName="nombre" required>
+                                                                    <mat-icon
+                                                                        class="material-icons-outlined color-icon p-3"
+                                                                        matSuffix>attach_money</mat-icon>
+                                                                    <!-- @if (cajaForm.get('nombre')?.hasError('required')) {
+                                                                    <mat-error>
+                                                                    El nombre es necesario
+                                                                    </mat-error>
+                                                                    } -->
+                                                                </mat-form-field>
+                                                            </div>
+                                                            <div class="col-xl-4 col-md-6 col-sm-12">
+                                                                <mat-form-field class="example-full-width"
+                                                                    appearance="outline">
+                                                                    <mat-label>Monto total en monedas</mat-label>
+                                                                    <input matInput formControlName="nombre" required>
+                                                                    <mat-icon
+                                                                        class="material-icons-outlined color-icon p-3"
+                                                                        matSuffix>show_chart</mat-icon>
+                                                                    <!-- @if (cajaForm.get('nombre')?.hasError('required')) {
+                                                                    <mat-error>
+                                                                    El nombre es necesario
+                                                                    </mat-error>
+                                                                    } -->
+                                                                </mat-form-field>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-xl-4 col-md-6 col-sm-12">
+
+                                                                <mat-form-field class="example-full-width"
+                                                                    appearance="outline">
+                                                                    <mat-label>Monto total en billetes</mat-label>
+                                                                    <input matInput formControlName="nombre" required>
+                                                                    <mat-icon
+                                                                        class="material-icons-outlined color-icon p-3"
+                                                                        matSuffix>face</mat-icon>
+                                                                    <!-- @if (cajaForm.get('nombre')?.hasError('required')) {
+                                                                        <mat-error>
+                                                                        El nombre es necesario
+                                                                        </mat-error>
+                                                                        } -->
+                                                                </mat-form-field>
+
+                                                            </div>
+                                                            <div class="col-xl-4 col-md-6 col-sm-12">
+                                                                <mat-form-field class="example-full-width"
+                                                                    appearance="outline">
+                                                                    <mat-label>Monto total virtual</mat-label>
+                                                                    <input matInput formControlName="nombre" required>
+                                                                    <mat-icon
+                                                                        class="material-icons-outlined color-icon p-3"
+                                                                        matSuffix>attach_money</mat-icon>
+                                                                    <!-- @if (cajaForm.get('nombre')?.hasError('required')) {
+                                                                    <mat-error>
+                                                                    El nombre es necesario
+                                                                    </mat-error>
+                                                                    } -->
+                                                                </mat-form-field>
+                                                            </div>
+                                                            <div class="col-xl-4 col-md-6 col-sm-12">
+                                                                <mat-form-field class="example-full-width"
+                                                                    appearance="outline">
+                                                                    <mat-label>Monto total del sistema</mat-label>
+                                                                    <input matInput formControlName="nombre" required>
+                                                                    <mat-icon
+                                                                        class="material-icons-outlined color-icon p-3"
+                                                                        matSuffix>show_chart</mat-icon>
+                                                                    <!-- @if (cajaForm.get('nombre')?.hasError('required')) {
+                                                                    <mat-error>
+                                                                    El nombre es necesario
+                                                                    </mat-error>
+                                                                    } -->
+                                                                </mat-form-field>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-xl-4 col-md-6 col-sm-12">
+
+                                                                <mat-form-field class="example-full-width"
+                                                                    appearance="outline">
+                                                                    <mat-label>Nombre</mat-label>
+                                                                    <input matInput formControlName="nombre" required>
+                                                                    <mat-icon
+                                                                        class="material-icons-outlined color-icon p-3"
+                                                                        matSuffix>face</mat-icon>
+                                                                    <!-- @if (cajaForm.get('nombre')?.hasError('required')) {
+                                                                    <mat-error>
+                                                                    El nombre es necesario
+                                                                    </mat-error>
+                                                                    } -->
+                                                                </mat-form-field>
+
+                                                            </div>
+                                                            <div class="col-xl-4 col-md-6 col-sm-12">
+                                                                <mat-form-field class="example-full-width"
+                                                                    appearance="outline">
+                                                                    <mat-label>Monto de cierre</mat-label>
+                                                                    <input matInput formControlName="nombre" required>
+                                                                    <mat-icon
+                                                                        class="material-icons-outlined color-icon p-3"
+                                                                        matSuffix>attach_money</mat-icon>
+                                                                    <!-- @if (cajaForm.get('nombre')?.hasError('required')) {
+                                                                    <mat-error>
+                                                                    El nombre es necesario
+                                                                    </mat-error>
+                                                                    } -->
+                                                                </mat-form-field>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-3">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
