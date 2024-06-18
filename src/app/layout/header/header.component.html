@@ -10,14 +10,31 @@
       </a>
     </div>
     <div class="collapse navbar-collapse" [ngClass]="isNavbarCollapsed ? '' : 'show'">
-      <ul class="float-start collapse-menu-icon">
+      <ul class="float-start collapse-menu-icon" style="display: flex;">
         <li>
           <button mat-button (click)="callSidemenuCollapse()" class="sidemenu-collapse nav-notification-icons"> <i
-              class="material-icons-outlined icon-color">
+              class="material-icons-outlined icon-color" style="font-size: 2em;">
               menu
             </i></button>
         </li>
+
+        <!-- Acceso directo a Ingresos -->
+        <li class="ingresos" >
+          <button mat-button class="nav-notification-icons" (click)="DirigirIngreso()" > <i
+              class="material-icons-outlined icon-color" style="font-size: 2em;">
+              trending_up
+            </i></button>
+        </li>
+
+        <!-- Acceso directo a Egresos -->
+        <li class="egresos">
+          <button mat-button class="nav-notification-icons" (click)="DirigirEgreso()"> <i
+              class="material-icons-outlined icon-color" style="font-size: 2em;">
+              trending_down
+            </i></button>
+        </li>
       </ul>
+
       <ul class="nav navbar-nav navbar-right">
         <!-- Full Screen Button -->
         <li class="fullscreen">

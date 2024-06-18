@@ -60,24 +60,25 @@ import { IngresoService } from 'app/services/ingreso/ingreso.service';
     IngresoTablaComponent,
   ],
   templateUrl: './ingresos.component.html',
-  styleUrl: './ingresos.component.scss'
+  styleUrls: ['./ingresos.component.scss']
 })
+export class IngresoComponent extends UnsubscribeOnDestroyAdapter {
 
-export class IngresoComponent
-  extends UnsubscribeOnDestroyAdapter{
-
+  // Lista de ingresos
   ingresos: Ingreso[] = [];
+  totalMontoIngreso: number = 0;
 
-  constructor(private fb: UntypedFormBuilder, private httpClient: HttpClient,
-    public ingresoService: IngresoService,
-  ) {
+  constructor(private fb: UntypedFormBuilder, private httpClient: HttpClient, public ingresoService: IngresoService) {
     super();
 
-    this.fetchI((data: Ingreso[]) => {
+    // Traemos los ingresos a una lista y recuperamos la suma total de los montos_ingreso para la caja
+    this.fetchIngresos((data: Ingreso[]) => {
       this.ingresos = data;
+      this.totalMontoIngreso = this.calcularTotalMontoIngreso();
     });
   }
-  fetchI(cb: (i: Ingreso[]) => void) {
+
+  fetchIngresos(cb: (i: Ingreso[]) => void) {
     const req = new XMLHttpRequest();
     req.open('GET', 'assets/data/ingresos.json');
     req.onload = () => {
@@ -87,4 +88,11 @@ export class IngresoComponent
     req.send();
   }
 
+  calcularTotalMontoIngreso(): number {
+    let total = 0;
+    for (const ingreso of this.ingresos) {
+      total += ingreso.monto_ingreso;
+    }
+    return total;
+  }
 }

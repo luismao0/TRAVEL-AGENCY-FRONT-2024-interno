@@ -1,28 +1,28 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UnsubscribeOnDestroyAdapter } from '@shared';
-import { Ingreso } from 'app/models/ingreso/ingreso.model';
+import { Egreso } from 'app/models/egreso/egreso.model';
 import { BehaviorSubject } from 'rxjs';
+
 @Injectable({
   providedIn: 'root'
 })
-export class IngresoService extends UnsubscribeOnDestroyAdapter{
+export class EgresoService extends UnsubscribeOnDestroyAdapter{
 
-  private readonly API_URL = 'assets/data/ingresos.json';
+  private readonly API_URL = 'assets/data/egresos.json';
   isTblLoading = true;
-  dataChange: BehaviorSubject<Ingreso[]> = new BehaviorSubject<Ingreso[]>([]);
-  dialogData!: Ingreso;
+  dataChange: BehaviorSubject<Egreso[]> = new BehaviorSubject<Egreso[]>([]);
+  dialogData!: Egreso;
   constructor(private httpClient: HttpClient) {
     super();
   }
-  get data(): Ingreso[] {
+  get data(): Egreso[] {
     return this.dataChange.value;
   }
   getDialogData() {
     return this.dialogData;
   }
-
-  deleteIngresos(id: number): void {
+  deleteEgresos(id: number): void {
     console.log(id);
 
     // this.httpClient.delete(this.API_URL + id)
@@ -35,9 +35,8 @@ export class IngresoService extends UnsubscribeOnDestroyAdapter{
     //       },
     //     });
   }
-
-  addIngreso(ingreso: Ingreso): void {
-    this.dialogData = ingreso;
+  addEgreso(egreso: Egreso): void {
+    this.dialogData = egreso;
 
     // this.httpClient.post(this.API_URL, doctors)
     //   .subscribe({
@@ -51,8 +50,8 @@ export class IngresoService extends UnsubscribeOnDestroyAdapter{
   }
 
   /** METODOS CRUD */
-  getAllIngresos(): void {
-    this.subs.sink = this.httpClient.get<Ingreso[]>(this.API_URL).subscribe({
+  getAllDoctorss(): void {
+    this.subs.sink = this.httpClient.get<Egreso[]>(this.API_URL).subscribe({
       next: (data) => {
         this.isTblLoading = false;
         this.dataChange.next(data);
