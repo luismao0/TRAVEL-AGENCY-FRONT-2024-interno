@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, /*OnInit*/ } from '@angular/core';
 import { BreadcrumbComponent } from '@shared/components/breadcrumb/breadcrumb.component';
 import { MatListModule } from '@angular/material/list';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,14 +11,14 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { FormDialogCajaComponent } from './dialog-caja/form-dialog-caja/form-dialog-caja.component';
-import { MatDialog } from '@angular/material/dialog';
+// import { FormDialogCajaComponent } from './dialog-caja/form-dialog-caja/form-dialog-caja.component';
+// import { MatDialog } from '@angular/material/dialog';
 //import { IngresoTablaComponent } from '../ingresos/ingreso-tabla/ingreso-tabla.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 //import { EgresoTablaComponent } from '../egresos/egreso-tabla/egreso-tabla.component';
-import { IConfig } from 'ngx-mask';
+// import { IConfig } from 'ngx-mask';
 
-import { FormBuilder, FormGroup } from '@angular/forms';
+// import { FormBuilder, FormGroup } from '@angular/forms';
 //import { IngresosComponent } from '../ingresos/ingresos.component';
 import { MatRadioModule } from '@angular/material/radio';
 //import { CajaSesionService } from '../caja-sesion/cajaSesion.service';
@@ -55,7 +55,7 @@ import { MatRadioModule } from '@angular/material/radio';
   templateUrl: './caja.component.html',
   styleUrl: './caja.component.scss'
 })
-export class CajaComponent implements OnInit {
+export class CajaComponent /*implements OnInit*/ {
   botonesHabilitados = false;
   //myForm: FormGroup;
   editable = false;
@@ -81,22 +81,22 @@ export class CajaComponent implements OnInit {
 
   items = ['', '', ''];
 
-  ngOnInit(): void {
-    // Suscribirse a los datos del servicio y prellenar el formulario
-    // this.cajaSesionService.dataChange.subscribe(data => {
-    //   console.log('Received data in component:', data); // Esto te permitirá ver qué datos se están recibiendo.
-    //   if (data.length > 0) {
-    //     const cajaSesion = data[0]; // Supongamos que sólo trabajamos con el primer elemento
-    //     this.myForm.patchValue({
-    //       //nombre_caja_sesion: cajaSesion.nombre_caja_sesion,
-    //       monto_apertura: cajaSesion.monto_apertura,
-    //       fecha_apertura: cajaSesion.fecha_apertura,
-    //       tipo_moneda: cajaSesion.moneda,
-    //       descripcion: cajaSesion.descripcion
-    //     });
-    //   }
-    // });
-  }
+  // ngOnInit(): void {
+  //   // Suscribirse a los datos del servicio y prellenar el formulario
+  //   // this.cajaSesionService.dataChange.subscribe(data => {
+  //   //   console.log('Received data in component:', data); // Esto te permitirá ver qué datos se están recibiendo.
+  //   //   if (data.length > 0) {
+  //   //     const cajaSesion = data[0]; // Supongamos que sólo trabajamos con el primer elemento
+  //   //     this.myForm.patchValue({
+  //   //       //nombre_caja_sesion: cajaSesion.nombre_caja_sesion,
+  //   //       monto_apertura: cajaSesion.monto_apertura,
+  //   //       fecha_apertura: cajaSesion.fecha_apertura,
+  //   //       tipo_moneda: cajaSesion.moneda,
+  //   //       descripcion: cajaSesion.descripcion
+  //   //     });
+  //   //   }
+  //   // });
+  // }
 
   add() {
     this.items = this.items.concat('');
@@ -142,4 +142,4 @@ export class CajaComponent implements OnInit {
   //   });
   //   this.ngOnInit(); // Revertir los valores a los datos originales
   // }
-}  
+}

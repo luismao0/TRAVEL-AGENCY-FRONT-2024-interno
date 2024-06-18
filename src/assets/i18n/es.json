@@ -15,7 +15,9 @@
     "CAJAS":{
       "TEXT": "Caja",
       "LIST": {
-        "INGRESOS" : "Ingresos"
+        "INGRESOS" : "Ingresos",
+        "EGRESOS" : "Egresos",
+        "CAJAS" : "Caja"
       }
     },
     "APPOINTMENTS": {

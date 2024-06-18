@@ -1,0 +1,126 @@
+[
+  {
+    "id_egreso": 1,
+    "concepto": "Paquete 4D-3N",
+    "monto_egreso": 100,
+    "medio_de_egreso": "Culqi",
+    "fecha_egreso": "2024-05-20T17:48:55.439Z",
+    "cajaSesion": {
+      "id_caja_sesion": 1,
+      "nombre_caja_sesion": "Caja_sesion_1",
+      "monto_apertura": 10,
+      "fecha_apertura": "2024-05-10T17:48:55.439Z",
+      "fecha_cierre": "2024-05-10T17:48:55.439Z",
+      "descripcion": "CAJA 1",
+      "caja": {
+        "id_caja": 1,
+        "nombre": "Caja General",
+        "estado": 1,
+        "fecha_creacion": "2024-05-05T17:48:55.439Z",
+        "monto_inicial": 0
+      },
+      "estado": 1,
+      "moneda": {
+        "id_moneda": 1,
+        "nombre": "Sol",
+        "simbolo": "S/",
+        "es_principal": true,
+        "estado": 1
+      }
+    },
+    "estado": 1
+  },
+  {
+    "id_egreso": 2,
+    "concepto": "Paquete 4D-3N",
+    "monto_egreso": 100,
+    "medio_de_egreso": "PagoEfectivo",
+    "fecha_egreso": "2024-05-20T17:48:55.439Z",
+    "cajaSesion": {
+      "id_caja_sesion": 1,
+      "nombre_caja_sesion": "Caja_sesion_1",
+      "monto_apertura": 10,
+      "fecha_apertura": "2024-05-10T17:48:55.439Z",
+      "fecha_cierre": "2024-05-10T17:48:55.439Z",
+      "descripcion": "CAJA 1",
+      "caja": {
+        "id_caja": 1,
+        "nombre": "Caja General",
+        "estado": 1,
+        "fecha_creacion": "2024-05-05T17:48:55.439Z",
+        "monto_inicial": 0
+      },
+      "estado": 1,
+      "moneda": {
+        "id_moneda": 1,
+        "nombre": "Sol",
+        "simbolo": "S/",
+        "es_principal": true,
+        "estado": 1
+      }
+    },
+    "estado": 1
+  },
+  {
+    "id_egreso": 3,
+    "concepto": "Paquete 4D-3N",
+    "monto_egreso": 100,
+    "medio_de_egreso": "Tarjeta de Crédito",
+    "fecha_egreso": "2024-05-20T17:48:55.439Z",
+    "cajaSesion": {
+      "id_caja_sesion": 1,
+      "nombre_caja_sesion": "Caja_sesion_1",
+      "monto_apertura": 10,
+      "fecha_apertura": "2024-05-10T17:48:55.439Z",
+      "fecha_cierre": "2024-05-10T17:48:55.439Z",
+      "descripcion": "CAJA 1",
+      "caja": {
+        "id_caja": 1,
+        "nombre": "Caja General",
+        "estado": 1,
+        "fecha_creacion": "2024-05-05T17:48:55.439Z",
+        "monto_inicial": 0
+      },
+      "estado": 1,
+      "moneda": {
+        "id_moneda": 1,
+        "nombre": "Sol",
+        "simbolo": "S/",
+        "es_principal": true,
+        "estado": 1
+      }
+    },
+    "estado": 1
+  },
+  {
+    "id_egreso": 4,
+    "concepto": "Paquete 4D-3N",
+    "monto_egreso": 100,
+    "medio_de_egreso": "FISICO",
+    "fecha_egreso": "2024-05-20T17:48:55.439Z",
+    "cajaSesion": {
+      "id_caja_sesion": 1,
+      "nombre_caja_sesion": "Caja_sesion_1",
+      "monto_apertura": 10,
+      "fecha_apertura": "2024-05-10T17:48:55.439Z",
+      "fecha_cierre": "2024-05-10T17:48:55.439Z",
+      "descripcion": "CAJA 1",
+      "caja": {
+        "id_caja": 1,
+        "nombre": "Caja General",
+        "estado": 1,
+        "fecha_creacion": "2024-05-05T17:48:55.439Z",
+        "monto_inicial": 0
+      },
+      "estado": 1,
+      "moneda": {
+        "id_moneda": 1,
+        "nombre": "Sol",
+        "simbolo": "S/",
+        "es_principal": true,
+        "estado": 1
+      }
+    },
+    "estado": 1
+  }
+]

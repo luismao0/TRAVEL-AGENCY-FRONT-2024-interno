@@ -155,6 +155,14 @@ export class HeaderComponent
     }
   }
 
+  DirigirIngreso(){
+    this.router.navigate(['/admin/cajas/ingresos']);
+  }
+
+  DirigirEgreso(){
+    this.router.navigate(['/admin/cajas/egresos']);
+  }
+
   callFullscreen() {
     if (!this.isFullScreen) {
       if (this.docElement?.requestFullscreen != null) {

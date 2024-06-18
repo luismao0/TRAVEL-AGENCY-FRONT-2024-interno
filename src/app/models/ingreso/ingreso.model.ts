@@ -1,15 +1,3 @@
-// MODELO INICIAL DE INGRESO, SE VA A MODIFICAR MÁS ADELANTE (QUITANDO datos que no se requieren)
-// export interface Ingreso {
-//   id_ingreso:    string;
-//   concepto:      string;
-//   monto_ingreso: number;
-//   medio_de_pago: string;
-//   fecha_ingreso: Date;
-//   cajaSesion:    CajaSesion;
-//   estado:        number;
-//   tipo_de_pago:  string;
-// }
-
 export class Ingreso{
   id_ingreso:    string;
   concepto:      string;

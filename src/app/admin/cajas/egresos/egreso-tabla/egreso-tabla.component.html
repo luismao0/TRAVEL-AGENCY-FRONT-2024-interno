@@ -1,15 +1,30 @@
 <div class="col-md-12 col-sm-12">
-  <mat-sidenav-container class="ingreso-container">
-    <mat-sidenav #sidenav [mode]="modoIngreso.value" position="end">
+  <mat-sidenav-container class="egreso-container">
+    <mat-sidenav #sidenav [mode]="mode_egreso.value" position="end">
       <div class="header">
-        <h2 class="header-title">{{dialogTitulo}}</h2>
+        <h2 class="header-title">{{dialogTitle}}</h2>
         <div class="header-close m-r-0">
-          <button mat-icon-button (click)="cerrarSlider(sidenav)">
+          @if (!isNewEvent) {
+          <button mat-icon-button (click)="deleteEgreso(sidenav)" matTooltip="Eliminar Egreso">
+            <mat-icon>delete</mat-icon>
+          </button>
+          }
+          @if (isNewEvent) {
+          <button mat-icon-button (click)="saveEgreso()" matTooltip="Guardar Egreso">
+            <mat-icon>save</mat-icon>
+          </button>
+          }
+          @if (!isNewEvent) {
+          <button mat-icon-button (click)="editEgreso()" matTooltip="Editar Egreso">
+            <mat-icon>save</mat-icon>
+          </button>
+          }
+          <button mat-icon-button (click)="closeSlider(sidenav)">
             <mat-icon>close</mat-icon>
           </button>
         </div>
       </div>
-      <form class="register-form m-4" [formGroup]="ingresoForm">
+      <form class="register-form m-4" [formGroup]="egresoForm">
         <div class="row">
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
             <mat-form-field [hidden]="false">
@@ -30,8 +45,8 @@
         <div class="row">
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
             <mat-form-field class="example-full-width" appearance="outline">
-              <mat-label>Monto de Ingreso</mat-label>
-              <input matInput formControlName="monto_ingreso">
+              <mat-label>Monto de Egreso</mat-label>
+              <input matInput formControlName="monto_egreso">
               <!-- <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>turned_in_not
                               </mat-icon> -->
             </mat-form-field>
@@ -39,7 +54,7 @@
         </div>
 
         <div class="row">
-          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+          <!-- <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
             <mat-form-field class="example-full-width" appearance="outline">
               <mat-label>Tipo de Pago</mat-label>
               <mat-select formControlName="tipo_de_pago">
@@ -51,11 +66,11 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-          </div>
-          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+          </div> -->
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
             <mat-form-field class="example-full-width" appearance="outline">
               <mat-label>Fecha de Pago</mat-label>
-              <input matInput formControlName="fecha_ingreso" [matDatepicker]="picker1">
+              <input matInput formControlName="fecha_egreso" [matDatepicker]="picker1">
               <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
               <mat-datepicker #picker1></mat-datepicker>
             </mat-form-field>
@@ -66,11 +81,11 @@
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
             <mat-form-field class="example-full-width" appearance="outline">
               <mat-label>Medio de Pago</mat-label>
-              <mat-select formControlName="medio_de_pago">
-                <mat-option [value]="'PAGO_EFECTIVO'">
+              <mat-select formControlName="medio_de_egreso">
+                <mat-option [value]="'PagoEfectivo'">
                   PagoEfectivo
                 </mat-option>
-                <mat-option [value]="'TARJETA_CREDITO'">
+                <mat-option [value]="'Tarjeta de Crédito'">
                   Tarjeta de Crédito
                 </mat-option>
                 <mat-option [value]="'Plin'">
@@ -79,7 +94,7 @@
                 <mat-option [value]="'YAPE'">
                   Yape
                 </mat-option>
-                <mat-option [value]="'CULQI'">
+                <mat-option [value]="'Culqi'">
                   Culqi
                 </mat-option>
                 <mat-option [value]="'WAYKI'">
@@ -91,7 +106,7 @@
                 <mat-option [value]="'YAPE'">
                   Agora PAY
                 </mat-option>
-                <mat-option [value]="'CULQI'">
+                <mat-option [value]="'BIM'">
                   BIM
                 </mat-option>
               </mat-select>
@@ -100,21 +115,7 @@
         </div>
 
         <div class="row">
-          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
-            <button mat-raised-button color="primary" class="w-100" (click)="editIngreso()">
-              Guardar Cambios
-            </button>
-          </div>
-          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
-            <button mat-raised-button color="warn" class="w-100" (click)="cerrarSlider(sidenav)">
-              Cancelar
-            </button>
-          </div>
-        </div>
-
-        <div class="row">
           <div class="col-xl-10 col-lg-10 col-md-12 col-sm-12">
-
           </div>
         </div>
       </form>
@@ -129,7 +130,7 @@
                 <div class="left">
                   <ul class="header-buttons-left ms-0">
                     <li class="tbl-title">
-                      <h2>Ingresos</h2>
+                      <h2>Egresos</h2>
                     </li>
                     <li class="tbl-search-box">
                       <label for="search-input"><i class="material-icons search-icon">search</i></label>
@@ -141,31 +142,31 @@
                 <div class="right">
                   <ul class="tbl-export-btn">
                     <li class="tbl-header-btn">
-                      <div class="m-l-10" matTooltip="Nuevo Ingreso">
-                        <button mat-mini-fab color="primary" (click)="agregarNuevoIngreso()">
+                      <div class="m-l-10" matTooltip="ADD">
+                        <button mat-mini-fab color="primary" (click)="addNewI()">
                           <!--  addnew() <- default -->
                           <mat-icon class="col-white">add</mat-icon>
                         </button>
                       </div>
                     </li>
                     <li class="tbl-header-btn">
-                      <div class="m-l-10" matTooltip="Recargar Ingresos">
-                        <button mat-mini-fab color="primary" (click)="refrescarIngresos()">
+                      <div class="m-l-10" matTooltip="REFRESH">
+                        <button mat-mini-fab color="primary" (click)="refresh()">
                           <mat-icon class="col-white">refresh</mat-icon>
                         </button>
                       </div>
                     </li>
                     <li class="tbl-header-btn">
-                      <div class="m-l-10" [hidden]=!seleccion.hasValue() matTooltip="DELETE">
-                        <button mat-mini-fab color="warn" (click)="eliminarFilasIngresoSeleccionadas()">
+                      <div class="m-l-10" [hidden]=!selections.hasValue() matTooltip="DELETE">
+                        <button mat-mini-fab color="warn" (click)="removeSelectedRowsI()">
                           <mat-icon class="col-white">delete
                           </mat-icon>
                         </button>
                       </div>
                     </li>
                     <li>
-                      <div class="export-button m-l-10" matTooltip="Exportar a Excel">
-                        <img src="assets/images/icons/xlsx.png" alt="" (click)="exportarIngresosExcel()" />
+                      <div class="export-button m-l-10" matTooltip="XLSX">
+                        <img src="assets/images/icons/xlsx.png" alt="" (click)="exportExcelI()" />
                       </div>
                     </li>
                   </ul>
@@ -173,18 +174,18 @@
               </div>
               <div class="body overflow-auto">
                 <div class="responsive_table">
-                  <table mat-table [dataSource]="fuenteData" matSort class="mat-cell advance-table">
+                  <table mat-table [dataSource]="dataSources" matSort class="mat-cell advance-table">
                     <!-- Checkbox Column -->
                     <ng-container matColumnDef="select">
                       <mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'">
-                        <mat-checkbox (change)="$event ? palancaMaestraIngresos() : null"
-                          [checked]="seleccion.hasValue() && estanTodosIngresosSeleccionados()"
-                          [indeterminate]="seleccion.hasValue() && !estanTodosIngresosSeleccionados()" [ngClass]="'tbl-checkbox'">
+                        <mat-checkbox (change)="$event ? masterToggleI() : null"
+                          [checked]="selections.hasValue() && isAllSelectedI()"
+                          [indeterminate]="selections.hasValue() && !isAllSelectedI()" [ngClass]="'tbl-checkbox'">
                         </mat-checkbox>
                       </mat-header-cell>
                       <mat-cell *matCellDef="let row" [ngClass]="'tbl-col-width-per-6'">
                         <mat-checkbox (click)="$event.stopPropagation()"
-                          (change)="$event ? seleccion.toggle(row) : null" [checked]="seleccion.isSelected(row)"
+                          (change)="$event ? selections.toggle(row) : null" [checked]="selections.isSelected(row)"
                           [ngClass]="'tbl-checkbox'">
                         </mat-checkbox>
                       </mat-cell>
@@ -192,7 +193,7 @@
                     <!-- ID Column -->
                     <ng-container matColumnDef="id">
                       <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
-                      <mat-cell *matCellDef="let row">{{row.id_ingreso}}</mat-cell>
+                      <mat-cell *matCellDef="let row">{{row.id_egreso}}</mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="concepto">
                       <mat-header-cell *matHeaderCellDef mat-sort-header>Concepto</mat-header-cell>
@@ -202,34 +203,34 @@
                     <ng-container matColumnDef="monto">
                       <mat-header-cell *matHeaderCellDef mat-sort-header>Monto de pago</mat-header-cell>
                       <mat-cell *matCellDef="let row"><span class="mobile-label">Monto de pago:</span>
-                        {{row.monto_ingreso}}</mat-cell>
+                        {{row.monto_egreso}}</mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="medio">
                       <mat-header-cell *matHeaderCellDef mat-sort-header>Medio de Pago</mat-header-cell>
                       <mat-cell *matCellDef="let row"> <span class="mobile-label">Medio de
-                          pago:</span>{{row.medio_de_pago}}</mat-cell>
+                          pago:</span>{{row.medio_de_egreso}}</mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="fecha">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de Ingreso</mat-header-cell>
-                      <mat-cell *matCellDef="let row"><span class="mobile-label">Date:</span>{{row.fecha_ingreso |
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de Egreso</mat-header-cell>
+                      <mat-cell *matCellDef="let row"><span class="mobile-label">Date:</span>{{row.fecha_egreso |
                         date:
                         'dd/MM/yyyy'}}</mat-cell>
                     </ng-container>
-                    <ng-container matColumnDef="tipo">
+                    <!-- <ng-container matColumnDef="tipo">
                       <mat-header-cell *matHeaderCellDef mat-sort-header>Tipo de Pago</mat-header-cell>
                       <mat-cell *matCellDef="let row"><span class="mobile-label">Tipo de Pago:</span>
                         {{row.tipo_de_pago}}</mat-cell>
-                    </ng-container>
+                    </ng-container> -->
 
                     <!-- actions -->
                     <ng-container matColumnDef="actions">
                       <mat-header-cell class="pr-0" *matHeaderCellDef>Acciones</mat-header-cell>
                       <mat-cell *matCellDef="let row; let i=index;" class="pr-0">
-                        <button mat-icon-button (click)="$event.stopPropagation()" (click)="editarLlamadaIngreso(row)"
+                        <button mat-icon-button (click)="$event.stopPropagation()" (click)="editCallI(row)"
                           class="tbl-action-btn">
                           <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
                         </button>
-                        <button mat-icon-button (click)="$event.stopPropagation()" (click)="quitarItemIngresos(row)"
+                        <button mat-icon-button (click)="$event.stopPropagation()" (click)="deleteItemI(row)"
                           class="tbl-action-btn">
                           <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
                         </button>
@@ -237,7 +238,7 @@
                     </ng-container>
                     <mat-header-row *matHeaderRowDef="columnasMostradas"></mat-header-row>
                     <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
-                    <mat-row *matRowDef="let row; columns: columnasMostradas;" (click)="ingresoClick(row, sidenav)"
+                    <mat-row *matRowDef="let row; columns: columnasMostradas;" (click)="egresoClick(row, sidenav)"
                       [style.cursor]="'pointer'" matRipple>
                     </mat-row>
                   </table>
@@ -249,11 +250,11 @@
                   </div>
                   }
                   @if (!database?.isTblLoading) {
-                  <div class="no-results" [style.display]="fuenteData.renderedData.length === 0 ? '' : 'none'">
-                    No se encontraron resultados
+                  <div class="no-results" [style.display]="dataSources.renderedData.length === 0 ? '' : 'none'">
+                    No results
                   </div>
                   }
-                  <mat-paginator #paginator [length]="fuenteData.filteredData.length" [pageIndex]="0" [pageSize]="10"
+                  <mat-paginator #paginator [length]="dataSources.filteredData.length" [pageIndex]="0" [pageSize]="10"
                     [pageSizeOptions]="[5, 10, 25, 100]">
                   </mat-paginator>
                 </div>

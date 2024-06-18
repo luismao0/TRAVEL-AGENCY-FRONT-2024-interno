@@ -1,0 +1,45 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <!-- Ruta -->
+      <app-breadcrumb [title]="'Caja'" [items]="[]" [active_item]="'Egresos'"></app-breadcrumb>
+    </div>
+    <div class="block-header">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12">
+        <div class="card h-100">
+          <div class="card-body">
+            <div class="task-module">
+              <div class="task-header" style="justify-content: space-between; align-items: center;">
+                <div class="task-title">
+                  <h2>Egresos</h2>
+                  <h5>{{egresos.length}} Egresos en total</h5>
+                </div>
+                <div></div>
+                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 ">
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Caja Sesión</mat-label>
+                    <mat-select formControlName="caja_sesion">
+                      <!-- @for (caja of cajas; track caja) {
+                      <mat-option [value]="caja.value">{{caja.viewValue}}</mat-option>
+                      } -->
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <app-egreso-tabla></app-egreso-tabla>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

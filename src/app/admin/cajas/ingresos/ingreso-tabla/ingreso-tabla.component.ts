@@ -71,16 +71,7 @@ export class IngresoTablaComponent
   extends UnsubscribeOnDestroyAdapter
   implements OnInit {
 
-  // displayedColumns = [
-  //   'select',
-  //   'concepto',
-  //   'monto',
-  //   'medio',
-  //   'fecha',
-  //   'tipo',
-  //   'actions',
-  // ];
-
+  // Columnas a mostrarse en la tabla
   columnasMostradas = [
     'id',
     'select',
@@ -92,43 +83,33 @@ export class IngresoTablaComponent
     'actions',
   ]
 
-  ids?: number;                                        // Falta refactorizar
-  indexs?: number;                                     // Falta refactorizar
-  selections = new SelectionModel<Ingreso>(true, []);  // Falta refactorizar
-  dataSources!: ExampleDataSources;                     // Falta refactorizar
+  idIngreso?: number;
+  seleccion = new SelectionModel<Ingreso>(true, []);
+  fuenteData!: FuenteDatos;
   database?: IngresoService;
-  // ingreso?: Ingreso;                                    // Falta refactorizar
+  ingreso?: Ingreso;
   ingresos: Ingreso[] = [];
-
-
-  mode_ingreso = new UntypedFormControl('side');                      // Falta refactorizar
+  modoIngreso = new UntypedFormControl('side');
   ingresoForm!: UntypedFormGroup;
-
-  showFiller = false;
-  isNewEvent = false;
-  dialogTitle?: string;
-  userImg?: string;
-
+  esNuevoEvento = false;
+  dialogTitulo?: string;
   mediosPago?: string[];
+
   constructor(private fb: UntypedFormBuilder, private httpClient: HttpClient,
     public dialog: MatDialog,
-
     public ingresoService: IngresoService,
-
     private snackBar: MatSnackBar
   ) {
     super();
-
     const blank = {} as Ingreso;
-    this.ingresoForm = this.createFormGroupI(blank);
-
-    this.fetchI((data: Ingreso[]) => {
+    this.ingresoForm = this.crearFormGroupIngreso(blank);
+    this.fetchIngresos((data: Ingreso[]) => {
       this.ingresos = data;
     });
   }
 
-
-  fetchI(cb: (i: Ingreso[]) => void) {
+  // Actualiza los ingresos existentes
+  fetchIngresos(cb: (i: Ingreso[]) => void) {
     const req = new XMLHttpRequest();
     req.open('GET', 'assets/data/ingresos.json');
     req.onload = () => {
@@ -138,58 +119,17 @@ export class IngresoTablaComponent
     req.send();
   }
 
-  dropIngreso(event: CdkDragDrop<string[]>) {
+  // Función para eliminar ingreso
+  eliminarIngreso(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.ingresos, event.previousIndex, event.currentIndex);
   }
 
-  toggle(task: { done: boolean }, nav: MatSidenav) {
-    nav.close();
-    task.done = !task.done;
-  }
-
-  addNewIngreso(nav: MatSidenav) {
-    this.resetFormFieldIngreso();
-    this.isNewEvent = true;
-    this.dialogTitle = 'Nuevo Ingreso';
-    nav.open();
-  }
-
+  // Muestra sidebar cuando sucede evento click sobre un Ingreso
   ingresoClick(ingreso: Ingreso, nav: MatSidenav): void {
-    this.isNewEvent = false;
-    this.dialogTitle = 'Editar Ingreso';
+    this.esNuevoEvento = false;
+    this.dialogTitulo = 'Editar Ingreso';
     nav.open();
-    this.ingresoForm = this.createFormGroupI(ingreso);
-  }
-
-  closeSlider(nav: MatSidenav) {
-    nav.close();
-  }
-
-  createFormGroupI(data: Ingreso) { // Se debe verificar si se envian datos nulos
-    return this.fb.group({
-      id: [data ? data.id_ingreso : null],
-      concepto: [data ? data.concepto : null],
-      monto_ingreso: [data ? data.monto_ingreso : null],
-      medio_de_pago: [data ? data.medio_de_pago : null],
-      fecha_ingreso: [data ? data.fecha_ingreso : null],
-      // estado: [data ? 1:1],
-      tipo_de_pago: [data ? data.tipo_de_pago : null]
-    });
-  }
-
-  saveIngreso() {
-    this.database?.dataChange.value.unshift(
-      this.ingresoForm.value
-    );
-    console.log(this.database);
-    console.log(this.ingresoForm.value);
-    this.refreshTable();
-    this.showNotification(
-      'snackbar-success',
-      '¡¡Registro agregado correctamente!!',
-      'bottom',
-      'center'
-    );
+    this.ingresoForm = this.crearFormGroupIngreso(ingreso);
   }
 
   editIngreso() {
@@ -201,7 +141,7 @@ export class IngresoTablaComponent
         this.ingresoForm.value;
       // Actualizar la tabla
       this.refreshTable();
-      this.showNotification(
+      this.mostrarNotificacion(
         'black',
         '¡¡Se editó el registro correctamente!!',
         'bottom',
@@ -209,72 +149,40 @@ export class IngresoTablaComponent
       );
     }
   }
-  editCallIs(row: Ingreso) {
-    this.ids = (+row.id_ingreso);
-    let tempDirection: Direction;
-    if (localStorage.getItem('isRtl') === 'true') {
-      tempDirection = 'rtl';
-    } else {
-      tempDirection = 'ltr';
-    }
-    const dialogRef = this.dialog.open(FormDialogIngresoComponent, {
-      data: {
-        ingresos: row,
-        action: 'edit',
-      },
-      direction: tempDirection,
-    });
-    this.subs.sink = dialogRef.afterClosed().subscribe((result) => {
-      if (result === 1) {
-        // En primer lugar encontramos el registro dentro de DataService por id
-        const foundIndex = this.database?.dataChange.value.findIndex(
-          (x) => (+x.id_ingreso) === this.ids
-        );
-        // Actualizar el registro utilizando los datos de dialogData (valores que ha introducido)
-        if (foundIndex != null && this.database) {
-          this.database.dataChange.value[foundIndex] =
-            this.ingresoService.getDialogData();
-          // Actualizar la tabla
-          this.refreshTable();
-          this.showNotification(
-            'black',
-            'Edit Record Successfully...!!!',
-            'bottom',
-            'center'
-          );
-        }
-      }
-    });
-  }
 
-  deleteIngreso(nav: MatSidenav) {
-    const targetIdx = this.ingresos
-      .map((item) => item.id_ingreso)
-      .indexOf(this.ingresoForm.value.id);
-    this.ingresos.splice(targetIdx, 1);
+  // Cierra slider
+  cerrarSlider(nav: MatSidenav) {
     nav.close();
   }
 
-  resetFormFieldIngreso() {
-    this.ingresoForm.controls['id'].reset();
-    this.ingresoForm.controls['concepto'].reset();
-    this.ingresoForm.controls['monto_ingreso'].reset();
-    this.ingresoForm.controls['tipo_de_pago'].reset();
-    this.ingresoForm.controls['fecha_ingreso'].reset();
-    this.ingresoForm.controls['medio_de_pago'].reset();
+  // Prepara data cuando se registra ingreso
+  crearFormGroupIngreso(data: Ingreso) { // Se debe verificar si se envian datos nulos
+    return this.fb.group({
+      id: [data ? data.id_ingreso : null],
+      concepto: [data ? data.concepto : null],
+      monto_ingreso: [data ? data.monto_ingreso : null],
+      medio_de_pago: [data ? data.medio_de_pago : null],
+      fecha_ingreso: [data ? data.fecha_ingreso : null],
+      // estado: [data ? 1:1],
+      tipo_de_pago: [data ? data.tipo_de_pago : null]
+    });
   }
 
-  public getRandomID(): string {
-    const S4 = () => {
-      return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-    };
-    return S4() + S4();
+  // Guarda ingreso (Usando Sidebar)
+  guardarIngreso() {
+    this.database?.dataChange.value.unshift(
+      this.ingresoForm.value
+    );
+    console.log(this.database);
+    console.log(this.ingresoForm.value);
+    this.refreshTable();
+    this.mostrarNotificacion(
+      'snackbar-success',
+      '¡¡Registro agregado correctamente!!',
+      'bottom',
+      'center'
+    );
   }
-
-
-
-
-
 
   @ViewChild(MatPaginator, { static: true })
   paginator!: MatPaginator;
@@ -283,18 +191,17 @@ export class IngresoTablaComponent
   @ViewChild('filter', { static: true }) filter?: ElementRef;
 
   ngOnInit() {
-    // this.loadData();
-    // this.mediosPago = Object.keys(MedioPagoEnum).map(key => MedioPagoEnum[(+key)]);
-    this.loadDataI();
+    // Se cargan los Ingresos al iniciar
+    this.cargarInformacionIngresos();
   }
 
-
-  refresh() {
-    // this.loadData();
-    this.loadDataI();
+  // Actualiza registro de ingresos
+  refrescarIngresos() {
+    this.cargarInformacionIngresos();
   }
 
-  addNewI() {
+  // Funcion para mostrar Dialog y agregar nuevo Ingreso
+  agregarNuevoIngreso() {
     let tempDirection: Direction;
     if (localStorage.getItem('isRtl') === 'true') {
       tempDirection = 'rtl';
@@ -310,15 +217,15 @@ export class IngresoTablaComponent
     });
     this.subs.sink = dialogRef.afterClosed().subscribe((result) => {
       if (result === 1) {
-        // After dialog is closed we're doing frontend updates
-        // For add we're just pushing a new row inside DataServicex
+        // Actualizaciones después de cerrar dialog
+        // Para agregar solo se incluye un nuevo registro en DataBase
         this.database?.dataChange.value.unshift(
           this.ingresoService.getDialogData()
         );
         this.refreshTable();
-        this.showNotification(
+        this.mostrarNotificacion(
           'snackbar-success',
-          'Add Record Successfully...!!!',
+          '¡¡Se agregó un nuevo registro!!',
           'bottom',
           'center'
         );
@@ -326,10 +233,10 @@ export class IngresoTablaComponent
     });
   }
 
-  editCallI(row: Ingreso) {
+  editarLlamadaIngreso(row: Ingreso) {
     console.log("row");
     console.log(row);
-    this.ids = (+row.id_ingreso);
+    this.idIngreso = (+row.id_ingreso);
     let tempDirection: Direction;
     if (localStorage.getItem('isRtl') === 'true') {
       tempDirection = 'rtl';
@@ -347,7 +254,7 @@ export class IngresoTablaComponent
       if (result === 1) {
         // When using an edit things are little different, firstly we find record inside DataService by id
         const foundIndex = this.database?.dataChange.value.findIndex(
-          (x) => (+x.id_ingreso) === this.ids
+          (x) => (+x.id_ingreso) === this.idIngreso
         );
         // Then you update that record using data from dialogData (values you enetered)
         if (foundIndex != null && this.database) {
@@ -355,7 +262,7 @@ export class IngresoTablaComponent
             this.ingresoService.getDialogData();
           // And lastly refresh table
           this.refreshTable();
-          this.showNotification(
+          this.mostrarNotificacion(
             'black',
             '¡¡Registro editado correctamente!!',
             'bottom',
@@ -366,8 +273,8 @@ export class IngresoTablaComponent
     });
   }
 
-  deleteItemI(row: Ingreso) {
-    this.ids = (+row.id_ingreso);
+  quitarItemIngresos(row: Ingreso) {
+    this.idIngreso = (+row.id_ingreso);
     let tempDirection: Direction;
     if (localStorage.getItem('isRtl') === 'true') {
       tempDirection = 'rtl';
@@ -381,13 +288,13 @@ export class IngresoTablaComponent
     this.subs.sink = dialogRef.afterClosed().subscribe((result) => {
       if (result === 1) {
         const foundIndex = this.database?.dataChange.value.findIndex(
-          (x) => (+x.id_ingreso) === this.ids
+          (x) => (+x.id_ingreso) === this.idIngreso
         );
-        // for delete we use splice in order to remove single object from DataService
+        // Para borrar utilizamos splice, esto para eliminar un único objeto de DataService
         if (foundIndex != null && this.database) {
           this.database.dataChange.value.splice(foundIndex, 1);
           this.refreshTable();
-          this.showNotification(
+          this.mostrarNotificacion(
             'snackbar-danger',
             'Se eliminó el item correctamente...!!!',
             'bottom',
@@ -403,33 +310,32 @@ export class IngresoTablaComponent
     this.paginator?._changePageSize(this.paginator?.pageSize);
   }
 
-  isAllSelectedI() {
-    const numSelected = this.selections.selected.length;
-    const numRows = this.dataSources.renderedData.length;
+  estanTodosIngresosSeleccionados() {
+    const numSelected = this.seleccion.selected.length;
+    const numRows = this.fuenteData.renderedData.length;
     return numSelected === numRows;
   }
 
-  masterToggleI() {
-    this.isAllSelectedI()
-      ? this.selections.clear()
-      : this.dataSources.renderedData.forEach((row) =>
-        this.selections.select(row)
+  palancaMaestraIngresos() {
+    this.estanTodosIngresosSeleccionados()
+      ? this.seleccion.clear()
+      : this.fuenteData.renderedData.forEach((row) =>
+        this.seleccion.select(row)
       );
   }
 
-  removeSelectedRowsI() {
-    const totalSelect = this.selections.selected.length;
-    this.selections.selected.forEach((item) => {
-      const index: number = this.dataSources.renderedData.findIndex(
+  eliminarFilasIngresoSeleccionadas() {
+    const totalSelect = this.seleccion.selected.length;
+    this.seleccion.selected.forEach((item) => {
+      const index: number = this.fuenteData.renderedData.findIndex(
         (d) => d === item
       );
-      // console.log(this.dataSource.renderedData.findIndex((d) => d === item));
       this.database?.dataChange.value.splice(index, 1);
 
       this.refreshTable();
-      this.selections = new SelectionModel<Ingreso>(true, []);
+      this.seleccion = new SelectionModel<Ingreso>(true, []);
     });
-    this.showNotification(
+    this.mostrarNotificacion(
       'snackbar-danger',
       totalSelect + ' Registros eliminados satisfactoriamente...!!!',
       'bottom',
@@ -437,40 +343,38 @@ export class IngresoTablaComponent
     );
   }
 
-  public loadDataI() {
+  public cargarInformacionIngresos() {
     this.database = new IngresoService(this.httpClient);
-    // console.log(this.database);
-    this.dataSources = new ExampleDataSources(
+    this.fuenteData = new FuenteDatos(
       this.database,
       this.paginator,
       this.sort
     );
     this.subs.sink = fromEvent(this.filter?.nativeElement, 'keyup').subscribe(
       () => {
-        if (!this.dataSources) {
+        if (!this.fuenteData) {
           return;
         }
-        this.dataSources.filter = this.filter?.nativeElement.value;
+        this.fuenteData.filter = this.filter?.nativeElement.value;
       }
     );
   }
 
-  exportExcelI() {
+  exportarIngresosExcel() {
     // key name with space add in brackets
     const exportData: Partial<TableElement>[] =
-      this.dataSources.filteredData.map((x) => ({
+      this.fuenteData.filteredData.map((x) => ({
         Id: x.id_ingreso,
         Concepto: x.concepto,
-        // FechaIngreso: x.fecha_ingreso,
         MedioPago: x.medio_de_pago,
         MontoIngreso: x.monto_ingreso,
         TipoPago: x.tipo_de_pago,
-        // 'Joining Date': formatDate(new Date(x.date), 'yyyy-MM-dd', 'en') || '',
+        // 'Joining Date': formatDate(new Date(x.date), 'yyyy-MM-dd', 'en') || '', // en caso de que se requiera hacer ajustes al exportar a excel
       }));
     TableExportUtil.exportToExcel(exportData, 'excel');
   }
 
-  showNotification(
+  mostrarNotificacion(
     colorName: string,
     text: string,
     placementFrom: MatSnackBarVerticalPosition,
@@ -483,10 +387,9 @@ export class IngresoTablaComponent
       panelClass: colorName,
     });
   }
-
 }
 
-export class ExampleDataSources extends DataSource<Ingreso> {
+export class FuenteDatos extends DataSource<Ingreso> {
   filterChange = new BehaviorSubject('');
   get filter(): string {
     return this.filterChange.value;
@@ -505,19 +408,19 @@ export class ExampleDataSources extends DataSource<Ingreso> {
     // Volver a la primera página cuando el usuario selecciona un filtro
     this.filterChange.subscribe(() => (this.paginator.pageIndex = 0));
   }
-  /** Connect function called by the table to retrieve one stream containing the data to render. */
+  /** Función de conexión llamada por la tabla para recuperar un flujo que contenga los datos a renderizar. */
   connect(): Observable<Ingreso[]> {
-    // Listen for any changes in the base data, sorting, filtering, or pagination
+    // Escucha a algún cambio en la fuente de datos en caso de que se requieran usar filtros u ordenar
     const displayDataChanges = [
       this.exampleDatabase.dataChange,
       this._sort.sortChange,
       this.filterChange,
       this.paginator.page,
     ];
-    this.exampleDatabase.getAllDoctorss();
+    this.exampleDatabase.getAllIngresos();
     return merge(...displayDataChanges).pipe(
       map(() => {
-        // Filter data
+        // Informacion filtrada
         this.filteredData = this.exampleDatabase.data
           .slice()
           .filter((ingresos: Ingreso) => {
@@ -533,7 +436,7 @@ export class ExampleDataSources extends DataSource<Ingreso> {
           });
         // Ordenar datos filtrados
         const sortedData = this.sortData(this.filteredData.slice());
-        // Toma la porción de la página de los datos filtrados y ordenados.
+        // Toma la porción de los datos filtrados y ordenados de la página.
         const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
         this.renderedData = sortedData.splice(
           startIndex,
@@ -543,6 +446,7 @@ export class ExampleDataSources extends DataSource<Ingreso> {
       })
     );
   }
+
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   disconnect() { }
   /** Devuelve una copia ordenada de los datos de database. */
@@ -563,12 +467,6 @@ export class ExampleDataSources extends DataSource<Ingreso> {
         case 'medio':
           [propertyA, propertyB] = [a.medio_de_pago, b.medio_de_pago];
           break;
-        // case 'time':
-        //   [propertyA, propertyB] = [a.monto_ingreso, b.monto_ingreso];
-        //   break;
-        // case 'mobile':
-        //   [propertyA, propertyB] = [a.mobile, b.mobile];
-        //   break;
       }
       const valueA = isNaN(+propertyA) ? propertyA : +propertyA;
       const valueB = isNaN(+propertyB) ? propertyB : +propertyB;
