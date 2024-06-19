@@ -100,6 +100,18 @@ export const ROUTES: RouteInfo[] = [
         role: [''],
         submenu: [],
       },
+      {
+        path: '/admin/cajas/Caja-Sesion',
+        title: 'MENUITEMS.CAJAS.LIST.CAJASESION',
+        iconType: '',
+        icon: '',
+        class: 'ml-menu',
+        groupTitle: false,
+        badge: '',
+        badgeClass: '',
+        role: [''],
+        submenu: [],
+      },
 
     ],
   },

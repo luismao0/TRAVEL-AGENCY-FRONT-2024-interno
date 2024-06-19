@@ -17,7 +17,8 @@
       "LIST": {
         "INGRESOS" : "Ingresos",
         "EGRESOS" : "Egresos",
-        "CAJAS" : "Caja"
+        "CAJAS" : "Caja",
+        "CAJASESION": "Caja-Sesion" 
       }
     },
     "APPOINTMENTS": {

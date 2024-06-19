@@ -273,6 +273,7 @@ export class IngresoTablaComponent
     });
   }
 
+  
   quitarItemIngresos(row: Ingreso) {
     this.idIngreso = (+row.id_ingreso);
     let tempDirection: Direction;

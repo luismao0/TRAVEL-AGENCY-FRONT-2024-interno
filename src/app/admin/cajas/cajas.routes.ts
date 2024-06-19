@@ -3,6 +3,9 @@ import { Route } from "@angular/router";
 import { IngresoComponent } from "./ingresos/ingresos.component";
 import { CajaComponent } from "./caja/caja.component";
 import { EgresosComponent } from "./egresos/egresos.component";
+
+import { CajaSesionComponent } from "../cajas/caja-sesion/caja-sesion.component";
+
 export const CAJAS_ROUTE: Route[] = [
   {
     path: "",
@@ -21,5 +24,11 @@ export const CAJAS_ROUTE: Route[] = [
     path: "egresos",
     component: EgresosComponent
   },
+
+  {
+    path: "Caja-Sesion",
+    component: CajaSesionComponent,
+  },
+
   { path: "**", component: Page404Component },
 ];
