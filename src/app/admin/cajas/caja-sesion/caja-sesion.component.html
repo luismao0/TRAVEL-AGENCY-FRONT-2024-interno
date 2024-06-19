@@ -1,0 +1,75 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <!-- Ruta -->
+      <app-breadcrumb [title]="'Caja-sesion'" [items]="[]" [active_item]="'Caja-sesion'"></app-breadcrumb>
+    </div>
+    <!------------------ SECCION PARA CREAR LA CAJA SESION --------------------------------->
+    <!------------------ SECCION PARA CREAR LA CAJA SESION --------------------------------->
+    <div class="body pb-4">
+      <div class="row clearfix">
+        <div class="col-xs-12 ol-sm-12 col-md-12 col-lg-12">
+          <mat-accordion>
+            <mat-expansion-panel expanded="true">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  CREAR CAJA
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="row">
+                <div class="row clearfix">
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card py-5">
+                      <div class="body" style="justify-content: space-between; align-items: center;">
+                        <div class="bg" fxLayout="column" fxLayoutAlign="center center">
+                          <h2 fxLayoutAlign="center center">
+                                ¿Desea crear una nueva caja sesion?
+                          </h2>
+                          <!-- <h3>
+                                                  No se ha creado una Caja Sesion aún
+                                              </h3> -->
+                          <button mat-raised-button color="primary" (click)="CrearTablaSesion()">Crear Caja </button>
+                          <!-- <ngx-skeleton-loader count="1" [theme]="{height: '20vh', width: '100vh'}" appearance="line" /> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12">
+        <div class="card h-100">
+          <div class="card-body">
+            <div class="task-module">
+              <div class="task-header">
+                <div class="task-title">
+                  <h2>Caja Sesion</h2>
+                  <!-- <h5>{{ingresos.length}} Ingresos en total</h5> -->
+                </div>
+                <!-- <div class="header-button">
+                  <button mat-raised-button color="primary" (click)="addNewIngreso(sidenav)">Crear Nuevo Caja
+                    Sesion</button>
+                </div> -->
+              </div>
+              <div class="row">
+
+                <app-caja-sesion-tabla></app-caja-sesion-tabla>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

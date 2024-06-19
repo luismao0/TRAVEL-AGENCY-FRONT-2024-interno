@@ -1,0 +1,97 @@
+<div class="addContainer">
+    <div class="modalHeader">
+      <div class="editRowModal">
+        <div class="modalHeader clearfix">
+          <!-- <img [src]='staff.img' alt="avatar"> -->
+          <div class="modal-about">
+            CREACION DE LA CAJA SESION
+          </div>
+        </div>
+      </div>
+      <button mat-icon-button (click)="dialogRef.close()" class="modal-close-button" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div mat-dialog-content>
+      <form class="register-form m-4" [formGroup]="cajaSesionForm" (ngSubmit)="submit">
+        <div class="row">
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Nombre de Caja</mat-label>
+              <input matInput formControlName="nombre_caja_sesion" required>
+              <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>face</mat-icon>
+              @if (cajaSesionForm.get('nombre_caja_sesion')?.hasError('required')) {
+              <mat-error>
+                El nombre es necesario
+              </mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Monto de Apertura</mat-label>
+              <input matInput formControlName="monto_apertura" required>
+              <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>business_center</mat-icon>
+              @if (cajaSesionForm.get('monto_apertura')?.hasError('required')) {
+              <mat-error>
+                El monto de Apertura es requerdo
+              </mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Fecha de Apertura</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="fecha_apertura">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              @if (cajaSesionForm.get('fecha_apertura')?.hasError('required')) {
+              <mat-error>
+                Por favor, seleccione la fecha
+              </mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Tipo de Moneda</mat-label>
+              <input matInput formControlName="tipo_moneda" required>
+              <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>money</mat-icon>
+              @if (cajaSesionForm.get('tipo_moneda')?.hasError('required')) {
+              <mat-error>
+                Indicar la moneda es necesario
+              </mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Descripcion</mat-label>
+              <textarea matInput formControlName="descripcion"></textarea>
+              @if (cajaSesionForm.get('descripcion')?.hasError('required')) {
+                <mat-error>
+                  Sera necesario una descripcion
+                </mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+            <div class="example-button-row">
+              <!-- <button mat-raised-button color="primary" [type]="submit" [disabled]="!staffForm.valid"
+                [mat-dialog-close]="1" (click)="confirmAdd()">Save</button> -->
+              <button mat-raised-button color="primary" [disabled]="!cajaSesionForm.valid" [mat-dialog-close]="1"
+                (click)="confirmAdd()">Crear</button>
+              <button mat-raised-button color="warn" (click)="onNoClick()" tabindex="-1">Cancelar</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>

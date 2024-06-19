@@ -98,9 +98,9 @@ export class CajaComponent /*implements OnInit*/ {
   //   // });
   // }
 
-  add() {
-    this.items = this.items.concat('');
-  }
+  // // add() {
+  // //   this.items = this.items.concat('');
+  // // }
 
   CrearTablaSesion() {
 
