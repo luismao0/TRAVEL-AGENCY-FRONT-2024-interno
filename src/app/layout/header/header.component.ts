@@ -1,3 +1,5 @@
+import { EgresoTablaComponent } from './../../admin/cajas/egresos/egreso-tabla/egreso-tabla.component';
+import { IngresoTablaComponent } from './../../admin/cajas/ingresos/ingreso-tabla/ingreso-tabla.component';
 import { DOCUMENT, NgClass } from '@angular/common';
 import {
   Component,
@@ -65,7 +67,9 @@ export class HeaderComponent
     private configService: ConfigService,
     private authService: AuthService,
     private router: Router,
-    public languageService: LanguageService
+    public languageService: LanguageService,
+    private ingresoTablaComponent : IngresoTablaComponent,
+    private egresoTablaComponent : EgresoTablaComponent
   ) {
     super();
   }
@@ -155,12 +159,21 @@ export class HeaderComponent
     }
   }
 
-  DirigirIngreso(){
-    this.router.navigate(['/admin/cajas/ingresos']);
+  // DirigirIngreso(){
+  //   this.router.navigate(['/admin/cajas/ingresos']);
+  // }
+
+  // DirigirEgreso(){
+  //   this.router.navigate(['/admin/cajas/egresos']);
+  // }
+
+  // MÉTODOS PARA ACCESOS DIRECTOS
+  accesoDirectoNuevoIngreso(){
+    this.ingresoTablaComponent.agregarNuevoIngreso();
   }
 
-  DirigirEgreso(){
-    this.router.navigate(['/admin/cajas/egresos']);
+  accesoDirectoNuevoEgreso(){
+    this.egresoTablaComponent.agregarNuevoEgreso();
   }
 
   callFullscreen() {

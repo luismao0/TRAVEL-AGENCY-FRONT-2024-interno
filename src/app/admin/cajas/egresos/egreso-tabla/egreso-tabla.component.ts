@@ -26,10 +26,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
 import { Direction } from '@angular/cdk/bidi';
-import { FormDialogComponent } from '../dialogs/form-dialog/form-dialog.component';
-import { DeleteDialogComponent } from '../dialogs/delete-dialog/delete-dialog.component';
 import { BehaviorSubject, Observable, fromEvent, map, merge } from 'rxjs';
 import { EgresoService } from 'app/services/egreso/egreso.service';
+import { DeleteDialogEgresoComponent } from '../dialogs/delete-dialog-egreso/delete-dialog-egreso.component';
+import { FormDialogEgresoComponent } from '../dialogs/form-dialog-egreso/form-dialog-egreso.component';
 
 @Component({
   selector: 'app-egreso-tabla',
@@ -55,7 +55,6 @@ import { EgresoService } from 'app/services/egreso/egreso.service';
     CdkDragPlaceholder,
     NgClass,
     DatePipe,
-
     MatTableModule,
     MatSortModule,
     FeatherIconsComponent,
@@ -71,7 +70,7 @@ export class EgresoTablaComponent
   implements OnInit {
 
   columnasMostradas = [
-    'id',
+    // 'id',
     'select',
     'concepto',
     'monto',
@@ -80,43 +79,35 @@ export class EgresoTablaComponent
     'actions',
   ]
 
-  ids?: number;                                        // Falta refactorizar
-  indexs?: number;                                     // Falta refactorizar
-  selections = new SelectionModel<Egreso>(true, []);  // Falta refactorizar
-  dataSources!: ExampleDataSources;                     // Falta refactorizar
+  idEgreso?: number;
+  seleccion = new SelectionModel<Egreso>(true, []);
+  fuenteData!: FuenteDatos;
   database?: EgresoService;
-  // egreso?: Egreso;                                    // Falta refactorizar
   egresos: Egreso[] = [];
 
-
-  mode_egreso = new UntypedFormControl('side');                      // Falta refactorizar
+  modoEgreso = new UntypedFormControl('side');
   egresoForm!: UntypedFormGroup;
 
   showFiller = false;
-  isNewEvent = false;
-  dialogTitle?: string;
-  userImg?: string;
-
+  esNuevoEvento = false;
+  dialogTitulo?: string;
   mediosPago?: string[];
+
   constructor(private fb: UntypedFormBuilder, private httpClient: HttpClient,
     public dialog: MatDialog,
-
     public egresoService: EgresoService,
-
     private snackBar: MatSnackBar
   ) {
     super();
-
     const blank = {} as Egreso;
-    this.egresoForm = this.createFormGroupI(blank);
-
-    this.fetchI((data: Egreso[]) => {
+    this.egresoForm = this.crearFormGroupEgreso(blank);
+    this.fetchEgresos((data: Egreso[]) => {
       this.egresos = data;
     });
   }
 
-
-  fetchI(cb: (i: Egreso[]) => void) {
+  // Actualiza los egresos existentes
+  fetchEgresos(cb: (i: Egreso[]) => void) {
     const req = new XMLHttpRequest();
     req.open('GET', 'assets/data/egresos.json');
     req.onload = () => {
@@ -126,7 +117,8 @@ export class EgresoTablaComponent
     req.send();
   }
 
-  dropEgreso(event: CdkDragDrop<string[]>) {
+  // Función para eliminar ingreso
+  eliminarEgreso(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.egresos, event.previousIndex, event.currentIndex);
   }
 
@@ -135,25 +127,27 @@ export class EgresoTablaComponent
     task.done = !task.done;
   }
 
-  addNewEgreso(nav: MatSidenav) {
-    this.resetFormFieldEgreso();
-    this.isNewEvent = true;
-    this.dialogTitle = 'Nuevo Egreso';
-    nav.open();
-  }
+  // addNewEgreso(nav: MatSidenav) {
+  //   this.resetFormFieldEgreso();
+  //   this.esNuevoEvento = true;
+  //   this.dialogTitulo = 'Nuevo Egreso';
+  //   nav.open();
+  // }
 
+  // Muestra sidebar cuando sucede evento click sobre un Egreso
   egresoClick(egreso: Egreso, nav: MatSidenav): void {
-    this.isNewEvent = false;
-    this.dialogTitle = 'Editar Egreso';
+    this.esNuevoEvento = false;
+    this.dialogTitulo = 'Editar Egreso';
     nav.open();
-    this.egresoForm = this.createFormGroupI(egreso);
+    this.egresoForm = this.crearFormGroupEgreso(egreso);
   }
 
-  closeSlider(nav: MatSidenav) {
+  // Cierra slider
+  cerrarSlider(nav: MatSidenav) {
     nav.close();
   }
 
-  createFormGroupI(data: Egreso) { // Se debe verificar si se envian datos nulos
+  crearFormGroupEgreso(data: Egreso) { // Se debe verificar si se envian datos nulos
     return this.fb.group({
       id: [data ? data.id_egreso : null],
       concepto: [data ? data.concepto : null],
@@ -163,14 +157,14 @@ export class EgresoTablaComponent
     });
   }
 
-  saveEgreso() {
+  guardarEgreso() {
     this.database?.dataChange.value.unshift(
       this.egresoForm.value
     );
     console.log(this.database);
     console.log(this.egresoForm.value);
-    this.refreshTable();
-    this.showNotification(
+    this.actualizarTabla();
+    this.mostrarNotificacion(
       'snackbar-success',
       '¡¡Registro agregado correctamente!!',
       'bottom',
@@ -178,7 +172,7 @@ export class EgresoTablaComponent
     );
   }
 
-  editEgreso() {
+  editarEgreso() {
     const targetIdx = this.egresos
       .map((item) => item.id_egreso)
       .indexOf(this.egresoForm.value.id);
@@ -186,8 +180,8 @@ export class EgresoTablaComponent
       this.database.dataChange.value[targetIdx] =
         this.egresoForm.value;
       // Actualizar la tabla
-      this.refreshTable();
-      this.showNotification(
+      this.actualizarTabla();
+      this.mostrarNotificacion(
         'black',
         '¡¡Se editó el registro correctamente!!',
         'bottom',
@@ -195,43 +189,43 @@ export class EgresoTablaComponent
       );
     }
   }
-  editCallIs(row: Egreso) {
-    this.ids = row.id_egreso;
-    let tempDirection: Direction;
-    if (localStorage.getItem('isRtl') === 'true') {
-      tempDirection = 'rtl';
-    } else {
-      tempDirection = 'ltr';
-    }
-    const dialogRef = this.dialog.open(FormDialogComponent, {
-      data: {
-        egresos: row,
-        action: 'edit',
-      },
-      direction: tempDirection,
-    });
-    this.subs.sink = dialogRef.afterClosed().subscribe((result) => {
-      if (result === 1) {
-        // En primer lugar encontramos el registro dentro de DataService por id
-        const foundIndex = this.database?.dataChange.value.findIndex(
-          (x) => x.id_egreso === this.ids
-        );
-        // Actualizar el registro utilizando los datos de dialogData (valores que ha introducido)
-        if (foundIndex != null && this.database) {
-          this.database.dataChange.value[foundIndex] =
-            this.egresoService.getDialogData();
-          // Actualizar la tabla
-          this.refreshTable();
-          this.showNotification(
-            'black',
-            'Edit Record Successfully...!!!',
-            'bottom',
-            'center'
-          );
-        }
-      }
-    });
-  }
+  // editarLlamadaEgreso(row: Egreso) {
+  //   this.idEgreso = row.id_egreso;
+  //   let tempDirection: Direction;
+  //   if (localStorage.getItem('isRtl') === 'true') {
+  //     tempDirection = 'rtl';
+  //   } else {
+  //     tempDirection = 'ltr';
+  //   }
+  //   const dialogRef = this.dialog.open(FormDialogEgresoComponent, {
+  //     data: {
+  //       egresos: row,
+  //       action: 'edit',
+  //     },
+  //     direction: tempDirection,
+  //   });
+  //   this.subs.sink = dialogRef.afterClosed().subscribe((result) => {
+  //     if (result === 1) {
+  //       // En primer lugar encontramos el registro dentro de DataService por id
+  //       const foundIndex = this.database?.dataChange.value.findIndex(
+  //         (x) => x.id_egreso === this.idEgreso
+  //       );
+  //       // Actualizar el registro utilizando los datos de dialogData (valores que ha introducido)
+  //       if (foundIndex != null && this.database) {
+  //         this.database.dataChange.value[foundIndex] =
+  //           this.egresoService.getDialogData();
+  //         // Actualizar la tabla
+  //         this.actualizarTabla();
+  //         this.mostrarNotificacion(
+  //           'black',
+  //           'Edit Record Successfully...!!!',
+  //           'bottom',
+  //           'center'
+  //         );
+  //       }
+  //     }
+  //   });
+  // }
 
   deleteEgreso(nav: MatSidenav) {
     const targetIdx = this.egresos
@@ -249,17 +243,6 @@ export class EgresoTablaComponent
     this.egresoForm.controls['medio_de_egreso'].reset();
   }
 
-  public getRandomID(): string {
-    const S4 = () => {
-      return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-    };
-    return S4() + S4();
-  }
-
-
-
-
-
 
   @ViewChild(MatPaginator, { static: true })
   paginator!: MatPaginator;
@@ -270,23 +253,23 @@ export class EgresoTablaComponent
   ngOnInit() {
     // this.loadData();
     // this.mediosPago = Object.keys(MedioPagoEnum).map(key => MedioPagoEnum[(+key)]);
-    this.loadDataI();
+    this.cargarInformacionEgresos();
   }
 
 
-  refresh() {
+  actualizar() {
     // this.loadData();
-    this.loadDataI();
+    this.cargarInformacionEgresos();
   }
 
-  addNewI() {
+  agregarNuevoEgreso() {
     let tempDirection: Direction;
     if (localStorage.getItem('isRtl') === 'true') {
       tempDirection = 'rtl';
     } else {
       tempDirection = 'ltr';
     }
-    const dialogRef = this.dialog.open(FormDialogComponent, {
+    const dialogRef = this.dialog.open(FormDialogEgresoComponent, {
       data: {
         egresos: this.egresos,
         action: 'add',
@@ -300,8 +283,8 @@ export class EgresoTablaComponent
         this.database?.dataChange.value.unshift(
           this.egresoService.getDialogData()
         );
-        this.refreshTable();
-        this.showNotification(
+        this.actualizarTabla();
+        this.mostrarNotificacion(
           'snackbar-success',
           'Add Record Successfully...!!!',
           'bottom',
@@ -311,17 +294,17 @@ export class EgresoTablaComponent
     });
   }
 
-  editCallI(row: Egreso) {
+  editarLlamadaEgreso(row: Egreso) {
     console.log("row");
     console.log(row);
-    this.ids = row.id_egreso;
+    this.idEgreso = row.id_egreso;
     let tempDirection: Direction;
     if (localStorage.getItem('isRtl') === 'true') {
       tempDirection = 'rtl';
     } else {
       tempDirection = 'ltr';
     }
-    const dialogRef = this.dialog.open(FormDialogComponent, {
+    const dialogRef = this.dialog.open(FormDialogEgresoComponent, {
       data: {
         egresos: row,
         action: 'edit',
@@ -332,15 +315,15 @@ export class EgresoTablaComponent
       if (result === 1) {
         // When using an edit things are little different, firstly we find record inside DataService by id
         const foundIndex = this.database?.dataChange.value.findIndex(
-          (x) => x.id_egreso === this.ids
+          (x) => x.id_egreso === this.idEgreso
         );
         // Then you update that record using data from dialogData (values you enetered)
         if (foundIndex != null && this.database) {
           this.database.dataChange.value[foundIndex] =
             this.egresoService.getDialogData();
-          // And lastly refresh table
-          this.refreshTable();
-          this.showNotification(
+          // And lastly actualizar table
+          this.actualizarTabla();
+          this.mostrarNotificacion(
             'black',
             '¡¡Registro editado correctamente!!',
             'bottom',
@@ -351,28 +334,28 @@ export class EgresoTablaComponent
     });
   }
 
-  deleteItemI(row: Egreso) {
-    this.ids = row.id_egreso;
+  eliminarItemEgreso(row: Egreso) {
+    this.idEgreso = row.id_egreso;
     let tempDirection: Direction;
     if (localStorage.getItem('isRtl') === 'true') {
       tempDirection = 'rtl';
     } else {
       tempDirection = 'ltr';
     }
-    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+    const dialogRef = this.dialog.open(DeleteDialogEgresoComponent, {
       data: row,
       direction: tempDirection,
     });
     this.subs.sink = dialogRef.afterClosed().subscribe((result) => {
       if (result === 1) {
         const foundIndex = this.database?.dataChange.value.findIndex(
-          (x) => x.id_egreso === this.ids
+          (x) => x.id_egreso === this.idEgreso
         );
         // for delete we use splice in order to remove single object from DataService
         if (foundIndex != null && this.database) {
           this.database.dataChange.value.splice(foundIndex, 1);
-          this.refreshTable();
-          this.showNotification(
+          this.actualizarTabla();
+          this.mostrarNotificacion(
             'snackbar-danger',
             'Se eliminó el item correctamente...!!!',
             'bottom',
@@ -384,37 +367,37 @@ export class EgresoTablaComponent
   }
 
 
-  private refreshTable() {
+  private actualizarTabla() {
     this.paginator?._changePageSize(this.paginator?.pageSize);
   }
 
-  isAllSelectedI() {
-    const numSelected = this.selections.selected.length;
-    const numRows = this.dataSources.renderedData.length;
+  estanTodosEgresosSeleccionados() {
+    const numSelected = this.seleccion.selected.length;
+    const numRows = this.fuenteData.renderedData.length;
     return numSelected === numRows;
   }
 
-  masterToggleI() {
-    this.isAllSelectedI()
-      ? this.selections.clear()
-      : this.dataSources.renderedData.forEach((row) =>
-        this.selections.select(row)
+  palancaMaestraEgresos() {
+    this.estanTodosEgresosSeleccionados()
+      ? this.seleccion.clear()
+      : this.fuenteData.renderedData.forEach((row) =>
+        this.seleccion.select(row)
       );
   }
 
-  removeSelectedRowsI() {
-    const totalSelect = this.selections.selected.length;
-    this.selections.selected.forEach((item) => {
-      const index: number = this.dataSources.renderedData.findIndex(
+  eliminarFilasEgresoSeleccionadas() {
+    const totalSelect = this.seleccion.selected.length;
+    this.seleccion.selected.forEach((item) => {
+      const index: number = this.fuenteData.renderedData.findIndex(
         (d) => d === item
       );
       // console.log(this.dataSource.renderedData.findIndex((d) => d === item));
       this.database?.dataChange.value.splice(index, 1);
 
-      this.refreshTable();
-      this.selections = new SelectionModel<Egreso>(true, []);
+      this.actualizarTabla();
+      this.seleccion = new SelectionModel<Egreso>(true, []);
     });
-    this.showNotification(
+    this.mostrarNotificacion(
       'snackbar-danger',
       totalSelect + ' Registros eliminados satisfactoriamente...!!!',
       'bottom',
@@ -422,28 +405,27 @@ export class EgresoTablaComponent
     );
   }
 
-  public loadDataI() {
+  public cargarInformacionEgresos() {
     this.database = new EgresoService(this.httpClient);
-    // console.log(this.database);
-    this.dataSources = new ExampleDataSources(
+    this.fuenteData = new FuenteDatos(
       this.database,
       this.paginator,
       this.sort
     );
     this.subs.sink = fromEvent(this.filter?.nativeElement, 'keyup').subscribe(
       () => {
-        if (!this.dataSources) {
+        if (!this.fuenteData) {
           return;
         }
-        this.dataSources.filter = this.filter?.nativeElement.value;
+        this.fuenteData.filter = this.filter?.nativeElement.value;
       }
     );
   }
 
-  exportExcelI() {
+  exportarEgresosExcel() {
     // key name with space add in brackets
     const exportData: Partial<TableElement>[] =
-      this.dataSources.filteredData.map((x) => ({
+      this.fuenteData.filteredData.map((x) => ({
         Id: x.id_egreso,
         Concepto: x.concepto,
         // FechaEgreso: x.fecha_egreso,
@@ -454,7 +436,7 @@ export class EgresoTablaComponent
     TableExportUtil.exportToExcel(exportData, 'excel');
   }
 
-  showNotification(
+  mostrarNotificacion(
     colorName: string,
     text: string,
     placementFrom: MatSnackBarVerticalPosition,
@@ -471,7 +453,7 @@ export class EgresoTablaComponent
 }
 
 
-export class ExampleDataSources extends DataSource<Egreso> {
+export class FuenteDatos extends DataSource<Egreso> {
   filterChange = new BehaviorSubject('');
   get filter(): string {
     return this.filterChange.value;

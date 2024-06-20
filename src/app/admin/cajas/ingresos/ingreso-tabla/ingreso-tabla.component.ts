@@ -73,7 +73,7 @@ export class IngresoTablaComponent
 
   // Columnas a mostrarse en la tabla
   columnasMostradas = [
-    'id',
+    /*'id',*/
     'select',
     'concepto',
     'monto',
@@ -450,7 +450,7 @@ export class FuenteDatos extends DataSource<Ingreso> {
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   disconnect() { }
-  /** Devuelve una copia ordenada de los datos de database. */
+  /* Devuelve una copia ordenada de los datos de database. */
   sortData(data: Ingreso[]): Ingreso[] {
     if (!this._sort.active || this._sort.direction === '') {
       return data;
