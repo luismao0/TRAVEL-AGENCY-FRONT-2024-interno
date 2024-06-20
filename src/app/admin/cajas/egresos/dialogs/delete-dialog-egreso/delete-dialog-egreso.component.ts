@@ -12,7 +12,7 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'app-delete-dialog',
+  selector: 'app-delete-dialog-egreso',
   standalone: true,
   imports: [
     MatDialogTitle,
@@ -21,14 +21,13 @@ export interface DialogData {
     MatButtonModule,
     MatDialogClose,
   ],
-  templateUrl: './delete-dialog.component.html',
-  styleUrl: './delete-dialog.component.scss'
+  templateUrl: './delete-dialog-egreso.component.html',
+  styleUrl: './delete-dialog-egreso.component.scss'
 })
-export class DeleteDialogComponent {
+export class DeleteDialogEgresoComponent {
   constructor(
-    public dialogRef: MatDialogRef<DeleteDialogComponent>,
+    public dialogRef: MatDialogRef<DeleteDialogEgresoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    // public doctorsService: DoctorsService,
     public egresosService: EgresoService
   ) { }
   onNoClick(): void {

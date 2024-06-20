@@ -16,7 +16,7 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'app-form-dialog',
+  selector: 'app-form-dialog-egreso',
   standalone: true,
   imports: [
     MatButtonModule,
@@ -29,16 +29,16 @@ export interface DialogData {
     MatDatepickerModule,
     MatDialogClose,
   ],
-  templateUrl: './form-dialog.component.html',
-  styleUrl: './form-dialog.component.scss'
+  templateUrl: './form-dialog-egreso.component.html',
+  styleUrl: './form-dialog-egreso.component.scss'
 })
-export class FormDialogComponent {
+export class FormDialogEgresoComponent {
   action: string;
   dialogTitle: string;
   egresosForm: UntypedFormGroup;
   egreso: Egreso;
   constructor(
-    public dialogRef: MatDialogRef<FormDialogComponent>,
+    public dialogRef: MatDialogRef<FormDialogEgresoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     public egresoService : EgresoService,
     private fb: UntypedFormBuilder
